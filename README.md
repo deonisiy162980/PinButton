@@ -13,4 +13,4 @@ pod 'PinButton', :git => 'https://github.com/deonisiy162980/PinButton'
 5) Enjoy!:)
 
 
-http://i069.radikal.ru/1704/87/20922f171d6a.png
+[alt tag](http://i069.radikal.ru/1704/87/20922f171d6a.png)
