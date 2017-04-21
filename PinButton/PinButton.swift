@@ -156,7 +156,7 @@ public extension PinButton
     {
         super.touchesBegan(touches, with: event)
         
-        UIView.animate(withDuration: 0.15) { 
+        UIView.animate(withDuration: 0.1) {
             self.gradient.colors = self.colorsForGradient.map { $0.withAlphaComponent(self.gradientAlpha).cgColor }
         }
         
@@ -168,7 +168,8 @@ public extension PinButton
     {
         super.touchesEnded(touches, with: event)
         
-        UIView.animate(withDuration: 0.15) {
+        self.gradient.colors = self.colorsForGradient.map { $0.withAlphaComponent(self.gradientAlpha).cgColor }
+        UIView.animate(withDuration: 0.1) {
             self.gradient.colors = self.colorsForGradient.map { $0.withAlphaComponent(0.0).cgColor }
         }
     }
