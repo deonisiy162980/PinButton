@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.version      = "1.0.3"
   s.summary      = "A button class for pin-code Controllers"
   s.description  = "This pod creates a custom button class that allows you to simple configurate a pin-code button."
-  s.homepage     = "http://EXAMPLE/PinButton"
+  s.homepage     = "https://github.com/deonisiy162980/PinButton"
   s.license      = "MIT"
   s.author             = "Denis Petrov"
   s.platform     = :ios, "8.2"
