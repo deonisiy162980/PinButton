@@ -11,10 +11,10 @@ import UIKit
 
 @IBDesignable public class PinButton: UIButton
 {
-    public var gradient = CAGradientLayer()
-    public var colorsForGradient = [UIColor.yellow, UIColor.blue]
-    public var subText : UILabel!
-    
+    fileprivate var gradient = CAGradientLayer()
+    fileprivate var colorsForGradient = [UIColor.yellow, UIColor.blue]
+    fileprivate var subText : UILabel!
+    fileprivate var buttonInTouchState = false
     
     
     @IBInspectable
@@ -87,7 +87,7 @@ import UIKit
         }
     }
     @IBInspectable
-    public var gradientAlpha : CGFloat = 0.7
+    public var gradientAlpha : Float = 0.7
         {
         didSet {
             configure()
@@ -98,6 +98,13 @@ import UIKit
         {
         didSet {
             configure()
+        }
+    }
+    @IBInspectable
+    public var animDuration : Double = 0.09
+        {
+        didSet {
+            
         }
     }
     
@@ -156,10 +163,14 @@ public extension PinButton
     {
         super.touchesBegan(touches, with: event)
         
-        UIView.animate(withDuration: 0.1) {
-            self.gradient.colors = self.colorsForGradient.map { $0.withAlphaComponent(self.gradientAlpha).cgColor }
-        }
+        buttonInTouchState = true
         
+        let animation = CABasicAnimation()
+        animation.fromValue = 0
+        animation.toValue = gradientAlpha
+        animation.duration = animDuration
+        gradient.opacity = gradientAlpha
+        gradient.add(animation, forKey: "opacity")
     }
     
     
@@ -168,10 +179,14 @@ public extension PinButton
     {
         super.touchesEnded(touches, with: event)
         
-        self.gradient.colors = self.colorsForGradient.map { $0.withAlphaComponent(self.gradientAlpha).cgColor }
-        UIView.animate(withDuration: 0.1) {
-            self.gradient.colors = self.colorsForGradient.map { $0.withAlphaComponent(0.0).cgColor }
-        }
+        let animation = CABasicAnimation()
+        animation.fromValue = gradientAlpha
+        animation.toValue = 0
+        animation.duration = animDuration + 0.3
+        gradient.opacity = 0.0
+        gradient.add(animation, forKey: "opacity")
+        
+        buttonInTouchState = false
     }
 }
 
@@ -264,8 +279,9 @@ public extension PinButton
         
         gradient.frame = CGRect(x: 0, y: 0, width: self.bounds.width - borderWidth, height: self.bounds.height - borderWidth)
         gradient.cornerRadius = gradient.bounds.width / 2
-        if showGradient { gradient.colors = colorsForGradient.map { $0.withAlphaComponent(gradientAlpha).cgColor } } else { gradient.colors = colorsForGradient.map { $0.withAlphaComponent(0.0).cgColor } }
+        if showGradient { gradient.opacity = gradientAlpha } else { gradient.opacity = 0.0 }
         self.layer.insertSublayer(gradient, at: 0)
+        
         
         
         self.setTitle("\(self.tag)", for: .normal)
@@ -277,6 +293,7 @@ public extension PinButton
         self.layer.cornerRadius = self.bounds.width / 2
         gradient.cornerRadius = gradient.bounds.width / 2
         gradient.frame = CGRect(x: 0, y: 0, width: self.bounds.width - borderWidth, height: self.bounds.height - borderWidth)
+        gradient.colors = colorsForGradient.map { $0.cgColor }
         
         addOrUpdateSubText()
     }
